@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Github Profile Clone With Repo</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- jquery  -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-migrate-3.4.1.min.js"
+      integrity="sha256-UnTxHm+zKuDPLfufgEMnKGXDl6fEIjtM+n1Q6lL73ok="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"
+      integrity="sha512-frFP3ZxLshB4CErXkPVEXnd5ingvYYtYhE5qllGdZmcOlRKNEPbufyupfdSTNmoF5ICaQNO6SenXzOZvoGkiIA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <style>
+      #user-avatar {
+        width: 12rem;
+      }
+
+      @media (max-width: 768px) {
+        html {
+          font-size: 80%;
+        }
+
+        #user-avatar {
+          width: 8rem;
+        }
+      }
+      .hide {
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="p-2">
+    <div class="container-fluid border border-2 border-dark p-2 p-md-3 px-lg-5">
+      <!-- user profile -->
+      <div
+        class="d-flex flex-column flex-md-row p-1 align-items-start gap-4 gap-md-5 mb-5 mt-1 mt-md-3"
+      >
+        <div
+          class="image d-flex flex-column justify-content-center align-items-center gap-2 gap-md-3 gap-xl-5"
+        >
+          <img
+            src=""
+            id="user-avatar"
+            class="rounded-circle border border-secondary p-1 img-thumbnail"
+            style="width: 12rem; height: 12rem"
+            alt="user avatar"
+          />
+          <span href="#" class="fs-5"
+            ><i
+              class="fa-solid fa-link copy-profile-link-btn"
+              style="cursor: pointer"
+            ></i>
+            <a
+              id="profile-link"
+              class="text-decoration-none link-dark fs-5"
+              href=""
+              target="_blank"
+            ></a
+          ></span>
+        </div>
+        <div class="details d-flex flex-column gap-2 pt-0">
+          <h2 id="user-full-name">John Doe</h2>
+          <h3 id="user-bio" class="fs-5">Big goes here</h3>
+          <h3 id="user-location" class="fs-5">
+            <i class="fa-solid fa-location-dot"></i> Orlando
+          </h3>
+          <h3 class="fs-5">
+            Twitter:
+            <a
+              href="#"
+              id="user-twitter-link"
+              target="_blank"
+              class="text-decoration-none link-dark"
+            ></a>
+          </h3>
+        </div>
+      </div>
+
+      <!-- select repo per page -->
+      <div
+        class="d-flex justify-content-start"
+        style="margin-top: -1rem; margin-bottom: 1rem"
+      >
+        <div class="d-flex gap-2">
+          <h3>Select repo per page</h3>
+          <select
+            class="form-select"
+            aria-label="Default select example"
+            style="width: 8rem"
+            id="selectReposElem"
+          >
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
+            <option value="60">60</option>
+            <option value="70">70</option>
+            <option value="80">80</option>
+            <option value="90">90</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- loading spinner -->
+      <div id="loading-spinner" class="hide">
+        <div
+          class="spinner-border"
+          style="width: 5rem; height: 5rem"
+          role="status"
+        >
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div
+          class="spinner-grow"
+          style="width: 5rem; height: 5rem"
+          role="status"
+        >
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+
+      <!-- user repos -->
+      <div
+        class="d-flex gap-5 p-1 flex-wrap justify-content-center justify-content-lg-start align-items-center align-items-lg-start"
+        id="repos-cont"
+      ></div>
+
+      <!-- pagination -->
+      <div class="d-flex justify-content-center">
+        <nav
+          id="paginationCont"
+          class="d-inline-flex justify-content-center mt-5"
+          aria-label="Page navigation example "
+        >
+          <ul class="pagination flex-wrap"></ul>
+        </nav>
+      </div>
+    </div>
+    <script>
+      //per page 10
+      //https://api.github.com/users/johnpapa/repos?per_page=10
+      //user data
+      //https://api.github.com/users/johnpapa
+      //user repos
+      //https://api.github.com/users/johnpapa/repos
+      /* {
+          "id": 256048704,
+          "node_id": "MDEwOlJlcG9zaXRvcnkyNTYwNDg3MDQ=",
+          "name": ".github",
+          "full_name": "johnpapa/.github",
+          "private": false,
+          "owner": {
+              "login": "johnpapa",
+              "id": 1202528,
+              "node_id": "MDQ6VXNlcjEyMDI1Mjg=",
+              "avatar_url": "https://avatars.githubusercontent.com/u/1202528?v=4",
+              "gravatar_id": "",
+              "url": "https://api.github.com/users/johnpapa",
+              "html_url": "https://github.com/johnpapa",
+              "followers_url": "https://api.github.com/users/johnpapa/followers",
+              "following_url": "https://api.github.com/users/johnpapa/following{/other_user}",
+              "gists_url": "https://api.github.com/users/johnpapa/gists{/gist_id}",
+              "starred_url": "https://api.github.com/users/johnpapa/starred{/owner}{/repo}",
+              "subscriptions_url": "https://api.github.com/users/johnpapa/subscriptions",
+              "organizations_url": "https://api.github.com/users/johnpapa/orgs",
+              "repos_url": "https://api.github.com/users/johnpapa/repos",
+              "events_url": "https://api.github.com/users/johnpapa/events{/privacy}",
+              "received_events_url": "https://api.github.com/users/johnpapa/received_events",
+              "type": "User",
+              "site_admin": false
+          },
+          "html_url": "https://github.com/johnpapa/.github",
+          "description": null,
+          "fork": false,
+          "url": "https://api.github.com/repos/johnpapa/.github",
+          "forks_url": "https://api.github.com/repos/johnpapa/.github/forks",
+          "keys_url": "https://api.github.com/repos/johnpapa/.github/keys{/key_id}",
+          "collaborators_url": "https://api.github.com/repos/johnpapa/.github/collaborators{/collaborator}",
+          "teams_url": "https://api.github.com/repos/johnpapa/.github/teams",
+          "hooks_url": "https://api.github.com/repos/johnpapa/.github/hooks",
+          "issue_events_url": "https://api.github.com/repos/johnpapa/.github/issues/events{/number}",
+          "events_url": "https://api.github.com/repos/johnpapa/.github/events",
+          "assignees_url": "https://api.github.com/repos/johnpapa/.github/assignees{/user}",
+          "branches_url": "https://api.github.com/repos/johnpapa/.github/branches{/branch}",
+          "tags_url": "https://api.github.com/repos/johnpapa/.github/tags",
+          "blobs_url": "https://api.github.com/repos/johnpapa/.github/git/blobs{/sha}",
+          "git_tags_url": "https://api.github.com/repos/johnpapa/.github/git/tags{/sha}",
+          "git_refs_url": "https://api.github.com/repos/johnpapa/.github/git/refs{/sha}",
+          "trees_url": "https://api.github.com/repos/johnpapa/.github/git/trees{/sha}",
+          "statuses_url": "https://api.github.com/repos/johnpapa/.github/statuses/{sha}",
+          "languages_url": "https://api.github.com/repos/johnpapa/.github/languages",
+          "stargazers_url": "https://api.github.com/repos/johnpapa/.github/stargazers",
+          "contributors_url": "https://api.github.com/repos/johnpapa/.github/contributors",
+          "subscribers_url": "https://api.github.com/repos/johnpapa/.github/subscribers",
+          "subscription_url": "https://api.github.com/repos/johnpapa/.github/subscription",
+          "commits_url": "https://api.github.com/repos/johnpapa/.github/commits{/sha}",
+          "git_commits_url": "https://api.github.com/repos/johnpapa/.github/git/commits{/sha}",
+          "comments_url": "https://api.github.com/repos/johnpapa/.github/comments{/number}",
+          "issue_comment_url": "https://api.github.com/repos/johnpapa/.github/issues/comments{/number}",
+          "contents_url": "https://api.github.com/repos/johnpapa/.github/contents/{+path}",
+          "compare_url": "https://api.github.com/repos/johnpapa/.github/compare/{base}...{head}",
+          "merges_url": "https://api.github.com/repos/johnpapa/.github/merges",
+          "archive_url": "https://api.github.com/repos/johnpapa/.github/{archive_format}{/ref}",
+          "downloads_url": "https://api.github.com/repos/johnpapa/.github/downloads",
+          "issues_url": "https://api.github.com/repos/johnpapa/.github/issues{/number}",
+          "pulls_url": "https://api.github.com/repos/johnpapa/.github/pulls{/number}",
+          "milestones_url": "https://api.github.com/repos/johnpapa/.github/milestones{/number}",
+          "notifications_url": "https://api.github.com/repos/johnpapa/.github/notifications{?since,all,participating}",
+          "labels_url": "https://api.github.com/repos/johnpapa/.github/labels{/name}",
+          "releases_url": "https://api.github.com/repos/johnpapa/.github/releases{/id}",
+          "deployments_url": "https://api.github.com/repos/johnpapa/.github/deployments",
+          "created_at": "2020-04-15T22:13:38Z",
+          "updated_at": "2020-04-19T07:43:25Z",
+          "pushed_at": "2020-04-15T22:15:06Z",
+          "git_url": "git://github.com/johnpapa/.github.git",
+          "ssh_url": "git@github.com:johnpapa/.github.git",
+          "clone_url": "https://github.com/johnpapa/.github.git",
+          "svn_url": "https://github.com/johnpapa/.github",
+          "homepage": null,
+          "size": 0,
+          "stargazers_count": 1,
+          "watchers_count": 1,
+          "language": null,
+          "has_issues": true,
+          "has_projects": true,
+          "has_downloads": true,
+          "has_wiki": true,
+          "has_pages": false,
+          "has_discussions": false,
+          "forks_count": 0,
+          "mirror_url": null,
+          "archived": false,
+          "disabled": false,
+          "open_issues_count": 0,
+          "license": null,
+          "allow_forking": true,
+          "is_template": false,
+          "web_commit_signoff_required": false,
+          "topics": [],
+          "visibility": "public",
+          "forks": 0,
+          "open_issues": 0,
+          "watchers": 1,
+          "default_branch": "master"
+      },
+          */
+
+      /*
+          {
+      "login": "johnpapa",
+      "id": 1202528,
+      "node_id": "MDQ6VXNlcjEyMDI1Mjg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1202528?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/johnpapa",
+      "html_url": "https://github.com/johnpapa",
+      "followers_url": "https://api.github.com/users/johnpapa/followers",
+      "following_url": "https://api.github.com/users/johnpapa/following{/other_user}",
+      "gists_url": "https://api.github.com/users/johnpapa/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/johnpapa/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/johnpapa/subscriptions",
+      "organizations_url": "https://api.github.com/users/johnpapa/orgs",
+      "repos_url": "https://api.github.com/users/johnpapa/repos",
+      "events_url": "https://api.github.com/users/johnpapa/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/johnpapa/received_events",
+      "type": "User",
+      "site_admin": false,
+      "name": "John Papa",
+      "company": "JohnPapa.net, LLC",
+      "blog": "http://johnpapa.net",
+      "location": "Orlando, FL",
+      "email": null,
+      "hireable": null,
+      "bio": "Winter is Coming",
+      "twitter_username": "john_papa",
+      "public_repos": 144,
+      "public_gists": 58,
+      "followers": 15219,
+      "following": 1,
+      "created_at": "2011-11-17T17:05:03Z",
+      "updated_at": "2023-11-01T15:31:38Z"
+  }
+          */
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>
