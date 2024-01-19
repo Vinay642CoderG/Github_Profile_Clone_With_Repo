@@ -6,3 +6,6 @@ All the related libraries is used using cdn, so make sure after cloning this rep
 
 #Project Details
 In this project I have used github api to get user profile data and repos data. After than I render this data in html file.
+
+#live Project View
+https://vinay642coderg.github.io/Github_Profile_Clone_With_Repo/
